@@ -1,0 +1,51 @@
+{
+  "name": "simple-cli-web-sass-boilerplate",
+  "version": "1.0.0",
+  "main": "app.js",
+  "author": "UlisDevCorner (https://youtube.ulisdevcorner.com/)",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/UlisDevCorner"
+  },
+  "config": {
+    "dist_dir": "public",
+    "port_dev": "3000",
+    "port_dist": "3001",
+    "backup_path": "Backup/UlisDevCorner"
+  },
+  "scripts": {
+    "build_var_add": "FOR /F \"tokens=*\" %g IN ('buildnumgen') do (npm config set build %g)",
+    "build_var_del": "npm config delete build",
+    "dist_copy": "cpy . ../../../%npm_package_config_dist_dir%/ --cwd=app/src/ --dot",
+    "dist_del": "del-cli -f app/%npm_package_config_dist_dir%",
+    "dist_scss_del": "del-cli -f app/%npm_package_config_dist_dir%/assets/scss",
+    "dist_versioning_html": "replace-in-files --string='version=' --replacement='ver=%npm_package_version%.%npm_config_build%' app/%npm_package_config_dist_dir%/index.html",
+    "dist_minify_html": "minify app/src/index.html > app/%npm_package_config_dist_dir%/index.html",
+    "dist_minify_styles": "minify app/src/assets/css/styles.css > app/%npm_package_config_dist_dir%/assets/css/styles.css",
+    "dist_minify_script": "minify app/src/assets/js/script.js > app/%npm_package_config_dist_dir%/assets/js/script.js",
+    "backup_dir_add": "mkdirp %OneDrive%/%npm_package_config_backup_path%/%npm_package_name%",
+    "backup_zip_project": "7z a %OneDrive%/%npm_package_config_backup_path%/%npm_package_name%/%npm_package_name%.%npm_package_version%_%npm_config_build%.zip . -xr!node_modules",
+    "server_browser_sync_online": "browser-sync app/src -w -b chrome --port %npm_package_config_port_dev% --no-notify --no-ui",
+    "server_browser_sync_offline": "browser-sync app/src -w -b chrome --port %npm_package_config_port_dev% --no-notify --no-ui --no-online",
+    "server_browser_sync_dist": "browser-sync app/%npm_package_config_dist_dir% -b chrome --port %npm_package_config_port_dist% --no-notify --no-ui",
+    "server_sass_watch": "sass app/src/assets/scss/main.scss app/src/assets/css/styles.css --no-source-map --watch",
+    "build:project": "npm-run-all -s dist_del dist_copy dist_scss_del build_var_del build_var_add dist_minify_html dist_minify_styles dist_minify_script dist_versioning_html build_var_del",
+    "backup:project": "npm-run-all -s build_var_del build_var_add backup_dir_add dist_del backup_zip_project build_var_del",
+    "run:devOffline": "npm-run-all -p server_browser_sync_offline server_sass_watch",
+    "run:devOnline": "npm-run-all -p server_browser_sync_online server_sass_watch",
+    "run:dist": "npm-run-all -s build:project server_browser_sync_dist"
+  },
+  "devDependencies": {
+    "browser-sync": "^3.0.2",
+    "build-number-generator": "^2.0.4",
+    "cpy-cli": "^5.0.0",
+    "del-cli": "^5.1.0",
+    "minify": "^11.2.0",
+    "mkdirp": "^3.0.1",
+    "node-7z-archive": "^1.1.7",
+    "npm-run-all": "^4.1.5",
+    "replace-in-files-cli": "^2.2.0",
+    "sass": "^1.77.4"
+  }
+}

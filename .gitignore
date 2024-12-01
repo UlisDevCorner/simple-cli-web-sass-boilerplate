@@ -1,0 +1,37 @@
+# Node.js dependencies
+node_modules/
+npm-debug.log*
+
+# Optional npm cache directory
+.npm/
+
+# Logs
+logs
+*.log
+logs/**/*.log
+
+# WinOS-specific files
+Thumbs.db
+ehthumbs.db
+
+# MacOS-specific files
+.DS_Store
+Icon?
+._*
+
+# dotenv environment files
+.env
+.env.*.local
+
+# Build outputs
+app/public
+
+# VS Code settings
+.vscode/
+*.code-workspace
+
+# Temporary files and backups
+*.bak
+*.tmp
+*.swp
+*.lock
